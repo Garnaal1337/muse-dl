@@ -43,11 +43,9 @@ module Muse::Dl
 
       # TODO: Add validation for the downloaded file (should be PDF)
       Crest.get(url, max_redirects: 0, handle_errors: false, headers: headers) do |response|
-        # puts response.headers["Content-Type"]
         content_type = response.headers["Content-Type"]
         if content_type.is_a? String
           if /html/.match content_type
-            puts response
             response.body_io.each_line do |line|
               # https://muse.jhu.edu/chapter/2383438/pdf
               # https://muse.jhu.edu/book/67393
@@ -77,7 +75,7 @@ module Muse::Dl
       puts "Downloaded #{chapter_id}"
     end
 
-    def self.get_info(url : String) : Muse::Dl::Thing | Nil
+    def self.get_info(url : String)
       match = /https:\/\/muse.jhu.edu\/(book|journal)\/(\d+)/.match url
       if match
         begin
